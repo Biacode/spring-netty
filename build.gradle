@@ -82,5 +82,6 @@ allprojects {
         testCompile("org.easymock:easymock:${easymockVersion}")
         testCompile("org.assertj:assertj-core:${assetjVersion}")
         testCompile("org.springframework:spring-test")
+        testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }
