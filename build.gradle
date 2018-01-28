@@ -1,34 +1,85 @@
 buildscript {
-    ext.kotlin_version = '1.2.21'
+    ext {
+        kotlinVersion = '1.2.21'
+        springBootVersion = '1.5.9.RELEASE'
+        springDependencyManagementVersion = '1.0.4.RELEASE'
+        platformGroup = 'org.biacode.hermes.core'
+        platformVersion = '0.0.1-SNAPSHOT'
+
+        commonsLangVersion = '3.7'
+        springBomVersion = 'Brussels-SR6'
+        nettyVersion = '4.1.20.Final'
+
+        easymockVersion = '3.5.1'
+        assetjVersion = '3.9.0'
+    }
 
     repositories {
+        mavenLocal()
         mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath("io.spring.gradle:dependency-management-plugin:${springDependencyManagementVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
     }
 }
 
-group 'org.biacode.hermes'
-version '0.0.0-SNAPSHOT'
+allprojects {
 
-apply plugin: 'java'
-apply plugin: 'kotlin'
+    apply plugin: 'idea'
+    apply plugin: 'kotlin'
+    apply plugin: 'eclipse'
+    apply plugin: 'kotlin-spring'
+    apply plugin: "io.spring.dependency-management"
 
-sourceCompatibility = 1.8
+    group = platformGroup
+    version = platformVersion
+    sourceCompatibility = 1.8
 
-repositories {
-    mavenCentral()
-}
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
 
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
 
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    dependencyManagement {
+        imports {
+            mavenBom "io.spring.platform:platform-bom:${springBomVersion}"
+        }
+    }
+
+    dependencies {
+        // Kotlin
+        compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+        compile "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
+
+        // Spring
+        compile("org.springframework:spring-context")
+
+        // Apache commons
+        compile("org.apache.commons:commons-lang3:${commonsLangVersion}")
+
+        // Logging
+        compile("org.slf4j:slf4j-api")
+        runtime("ch.qos.logback:logback-classic")
+
+        // Others
+        compile("io.netty:netty-all:${nettyVersion}")
+        compile("com.fasterxml.jackson.core:jackson-databind")
+
+        // Test
+        testCompile("junit:junit")
+        testCompile("org.easymock:easymock:${easymockVersion}")
+        testCompile("org.assertj:assertj-core:${assetjVersion}")
+        testCompile("org.springframework:spring-test")
+    }
 }
