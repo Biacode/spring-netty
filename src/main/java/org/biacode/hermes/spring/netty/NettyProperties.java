@@ -1,0 +1,174 @@
+package org.biacode.hermes.spring.netty;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+/**
+ * Created by Arthur Asatryan.
+ * Date: 1/28/18
+ * Time: 8:03 PM
+ */
+@ConfigurationProperties("spring.netty")
+public class NettyProperties {
+
+    /**
+     * The host configuration.
+     */
+    private Host host = new Host();
+
+    /**
+     * The SSL configuration (in particular enabling and disabling).
+     */
+    private Ssl ssl = new Ssl();
+
+    /**
+     * Netty boss event loop group configuration.
+     */
+    private Boss boss = new Boss();
+
+    /**
+     * Netty worker event loop group configuration.
+     */
+    private Worker worker = new Worker();
+
+    //region Properties getters and setters
+    public Host getHost() {
+        return host;
+    }
+
+    public void setHost(final Host host) {
+        this.host = host;
+    }
+
+    public Ssl getSsl() {
+        return ssl;
+    }
+
+    public void setSsl(final Ssl ssl) {
+        this.ssl = ssl;
+    }
+
+    public Boss getBoss() {
+        return boss;
+    }
+
+    public void setBoss(final Boss boss) {
+        this.boss = boss;
+    }
+
+    public Worker getWorker() {
+        return worker;
+    }
+
+    public void setWorker(final Worker worker) {
+        this.worker = worker;
+    }
+    //endregion
+
+    class Host {
+        /**
+         * Host address. E.g localhost or 127.0.0.1.
+         * Default 0.0.0.0
+         */
+        private String address = "0.0.0.0";
+        /**
+         * Bind port.
+         * Default 8081
+         */
+        private int port = 8081;
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(final String address) {
+            this.address = address;
+        }
+
+        public int getPort() {
+            return port;
+        }
+
+        public void setPort(final int port) {
+            this.port = port;
+        }
+    }
+
+    class Ssl {
+        /**
+         * Enable or disable SSL.
+         * Default false
+         */
+        private boolean enabled = false;
+
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(final boolean enabled) {
+            this.enabled = enabled;
+        }
+    }
+
+    class Boss {
+        /**
+         * Boss thread settings.
+         */
+        private Thread thread = new Thread();
+
+        public Thread getThread() {
+            return thread;
+        }
+
+        public void setThread(final Thread thread) {
+            this.thread = thread;
+        }
+
+        class Thread {
+            /**
+             * Boss thread size.
+             * Default 1
+             */
+            private int size = 1;
+
+            public int getSize() {
+                return size;
+            }
+
+            public void setSize(final int size) {
+                this.size = size;
+            }
+        }
+    }
+
+    class Worker {
+        /**
+         * Worker thread settings.
+         */
+        private Worker.Thread thread = new Worker.Thread();
+
+        public Worker.Thread getThread() {
+            return thread;
+        }
+
+        public void setThread(final Worker.Thread thread) {
+            this.thread = thread;
+        }
+
+        class Thread {
+            /**
+             * Worker thread size.
+             * Default 4
+             */
+            private int size = 4;
+
+            public int getSize() {
+                return size;
+            }
+
+            public void setSize(final int size) {
+                this.size = size;
+            }
+        }
+    }
+
+}

@@ -45,9 +45,11 @@ class WebSocketServerInitializer : ChannelInitializer<SocketChannel>() {
     }
     //endregion
 
+    //region Companion object
     companion object {
         private const val WEBSOCKET_PATH = "/websocket"
 
         private val logger = LoggerFactory.getLogger(WebSocketServerInitializer::class.java)
     }
+    //endregion
 }
