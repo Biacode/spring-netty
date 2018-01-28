@@ -27,7 +27,7 @@ buildscript {
         classpath ('io.spring.gradle:propdeps-plugin:0.0.9.RELEASE')
     }
 }
-apply plugin: 'maven'
+
 allprojects {
 
     apply plugin: 'idea'
