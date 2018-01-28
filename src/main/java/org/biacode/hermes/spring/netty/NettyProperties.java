@@ -64,7 +64,7 @@ public class NettyProperties {
     }
     //endregion
 
-    class Host {
+    static class Host {
         /**
          * Host address. E.g localhost or 127.0.0.1.
          * Default 0.0.0.0
@@ -93,7 +93,7 @@ public class NettyProperties {
         }
     }
 
-    class Ssl {
+    static class Ssl {
         /**
          * Enable or disable SSL.
          * Default false
@@ -109,7 +109,7 @@ public class NettyProperties {
         }
     }
 
-    class Boss {
+    static class Boss {
         /**
          * Boss thread settings.
          */
@@ -123,7 +123,7 @@ public class NettyProperties {
             this.thread = thread;
         }
 
-        class Thread {
+        static class Thread {
             /**
              * Boss thread size.
              * Default 1
@@ -140,7 +140,7 @@ public class NettyProperties {
         }
     }
 
-    class Worker {
+    static class Worker {
         /**
          * Worker thread settings.
          */
@@ -154,7 +154,7 @@ public class NettyProperties {
             this.thread = thread;
         }
 
-        class Thread {
+        static class Thread {
             /**
              * Worker thread size.
              * Default 4

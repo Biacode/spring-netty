@@ -21,10 +21,10 @@ class WebSocketServerInitializer : ChannelInitializer<SocketChannel>() {
 
     //region Dependencies
     @Autowired
-    private lateinit var webSocketFrameHandler: WebSocketFrameHandler
+    private var sslCtx: SslContext? = null
 
     @Autowired
-    private var sslCtx: SslContext? = null
+    private lateinit var webSocketFrameHandler: WebSocketFrameHandler
     //endregion
 
     //region Public methods

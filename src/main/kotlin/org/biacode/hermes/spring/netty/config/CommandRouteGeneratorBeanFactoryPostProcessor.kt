@@ -1,7 +1,7 @@
 package org.biacode.hermes.spring.netty.config
 
 import org.biacode.hermes.spring.netty.config.annotation.NettyCommand
-import org.biacode.hermes.spring.netty.model.ControllerMethodRoute
+import org.biacode.hermes.spring.netty.model.NettyControllerMethodRoute
 import org.biacode.hermes.spring.netty.model.NettyControllerRequest
 import org.biacode.hermes.spring.netty.service.ControllerMethodRouteRegistryService
 import org.springframework.beans.factory.annotation.Autowired
@@ -45,7 +45,7 @@ class CommandRouteGeneratorBeanFactoryPostProcessor : ApplicationListener<Contex
                         if (NettyControllerRequest::class.java.isAssignableFrom(resolvedClass)) {
                             controllerMethodRouteWrapper.addRoute(
                                     annotation.value,
-                                    ControllerMethodRoute(beanMethod, resolvedClass, beanObject)
+                                    NettyControllerMethodRoute(beanMethod, resolvedClass, beanObject)
                             )
                             break
                         }

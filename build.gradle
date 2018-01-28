@@ -4,7 +4,7 @@ buildscript {
         springBootVersion = '1.5.9.RELEASE'
         springDependencyManagementVersion = '1.0.4.RELEASE'
         platformGroup = 'org.biacode.hermes.core'
-        platformVersion = '0.0.1-SNAPSHOT'
+        platformVersion = '0.1.0-SNAPSHOT'
 
         commonsLangVersion = '3.7'
         springBomVersion = 'Brussels-SR6'

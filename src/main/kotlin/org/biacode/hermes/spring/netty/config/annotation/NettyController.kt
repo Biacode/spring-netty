@@ -1,5 +1,7 @@
 package org.biacode.hermes.spring.netty.config.annotation
 
+import org.springframework.stereotype.Component
+
 /**
  * Created by Arthur Asatryan.
  * Date: 1/28/18
@@ -7,4 +9,5 @@ package org.biacode.hermes.spring.netty.config.annotation
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
+@Component
 annotation class NettyController

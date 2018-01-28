@@ -7,7 +7,7 @@ import java.lang.reflect.Method
  * Date: 1/27/18
  * Time: 8:56 PM
  */
-data class ControllerMethodRoute(
+data class NettyControllerMethodRoute(
         val method: Method,
         val requestClass: Class<*>,
         val beanObject: Any

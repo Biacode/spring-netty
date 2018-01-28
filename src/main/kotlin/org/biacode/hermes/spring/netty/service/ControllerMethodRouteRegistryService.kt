@@ -1,7 +1,10 @@
 package org.biacode.hermes.spring.netty.service
 
-import org.biacode.hermes.spring.netty.model.ControllerMethodRoute
+import io.netty.util.internal.PlatformDependent
+import org.biacode.hermes.spring.netty.model.NettyControllerMethodRoute
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import java.util.concurrent.ConcurrentMap
 
 /**
  * Created by Arthur Asatryan.
@@ -10,13 +13,26 @@ import org.springframework.stereotype.Service
  */
 @Service
 class ControllerMethodRouteRegistryService {
-    private val routes = mutableMapOf<String, ControllerMethodRoute>()
 
-    fun addRoute(commandType: String, controllerMethodRoute: ControllerMethodRoute) {
-        routes[commandType] = controllerMethodRoute
+    //region Properties
+    private val routes: ConcurrentMap<String, NettyControllerMethodRoute> = PlatformDependent.newConcurrentHashMap()
+    //endregion
+
+    //region Public methods
+    fun addRoute(command: String, route: NettyControllerMethodRoute) {
+        logger.debug("Adding controller method route with command - {} and route - {}", command, route)
+        routes[command] = route
     }
 
-    fun getRoute(commandType: String): ControllerMethodRoute {
-        return routes[commandType]!!
+    fun getRoute(command: String): NettyControllerMethodRoute {
+        logger.debug("Getting controller method route for command - {}", command)
+        return routes[command]!!
     }
+    //endregion
+
+    //region Companion object
+    companion object {
+        private val logger = LoggerFactory.getLogger(ControllerMethodRouteRegistryService::class.java)
+    }
+    //endregion
 }
