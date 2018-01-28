@@ -64,6 +64,7 @@ allprojects {
 
         // Spring
         compile("org.springframework:spring-context")
+        compile("org.springframework.boot:spring-boot-starter")
 
         // Apache commons
         compile("org.apache.commons:commons-lang3:${commonsLangVersion}")
