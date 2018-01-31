@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * Created by Arthur Asatryan.
  * Date: 1/31/18
  * Time: 3:54 PM
- * <p/>
+ * <p>
  * This BPP will fix bean definition class name nullability issue for classes
  * which are annotated with NettyController.
  */

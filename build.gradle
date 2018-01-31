@@ -43,6 +43,74 @@ allprojects {
     apply plugin: 'propdeps-idea'
     apply plugin: 'propdeps-eclipse'
 
+    if (System.env['DEPLOY_TO_NEXUS'] != null) {
+
+        apply plugin: 'signing'
+
+        signing {
+            sign configurations.archives
+        }
+
+        task javadocJar(type: Jar) {
+            classifier = 'javadoc'
+            from javadoc
+        }
+
+        task sourcesJar(type: Jar) {
+            classifier = 'sources'
+            from sourceSets.main.allSource
+        }
+
+        artifacts {
+            archives javadocJar, sourcesJar
+        }
+
+        uploadArchives {
+            repositories {
+                mavenDeployer {
+                    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                        authentication(userName: System.getenv('NEXUS_USERNAME'), password: System.getenv('NEXUS_PASSWORD'))
+                    }
+
+                    snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                        authentication(userName: System.getenv('NEXUS_USERNAME'), password: System.getenv('NEXUS_PASSWORD'))
+                    }
+
+                    pom.project {
+                        name 'NettySpring'
+                        packaging 'jar'
+                        // optionally artifactId can be defined here
+                        description 'Netty spring integration.'
+                        url 'https://github.com/hermes-chat/spring-netty'
+
+                        scm {
+                            connection 'scm:git@github.com:hermes-chat/spring-netty.git'
+                            developerConnection 'scm:git:ssh://github.com:hermes-chat/spring-netty.git'
+                            url 'https://github.com/hermes-chat/spring-netty/tree/master'
+                        }
+
+                        licenses {
+                            license {
+                                name 'Apache-2.0'
+                                url 'https://opensource.org/licenses/Apache-2.0'
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id 'biacode'
+                                name 'Artur Asatryan'
+                                email 'biacoder@gmail.com'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     group = platformGroup
     version = platformVersion
     sourceCompatibility = 1.8
