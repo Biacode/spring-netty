@@ -9,6 +9,7 @@ buildscript {
         commonsLangVersion = '3.7'
         springBomVersion = 'Brussels-SR6'
         nettyVersion = '4.1.20.Final'
+        propDepsPluginVersion = '0.0.9.RELEASE'
 
         easymockVersion = '3.5.1'
         assetjVersion = '3.9.0'
@@ -24,7 +25,7 @@ buildscript {
         classpath("io.spring.gradle:dependency-management-plugin:${springDependencyManagementVersion}")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
         classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
-        classpath ('io.spring.gradle:propdeps-plugin:0.0.9.RELEASE')
+        classpath("io.spring.gradle:propdeps-plugin:${propDepsPluginVersion}")
     }
 }
 
