@@ -3,8 +3,8 @@ buildscript {
         kotlinVersion = '1.2.21'
         springBootVersion = '1.5.9.RELEASE'
         springDependencyManagementVersion = '1.0.4.RELEASE'
-        platformGroup = 'org.biacode.hermes.core'
-        platformVersion = '0.2.0-SNAPSHOT'
+        platformGroup = 'org.biacode.hermes'
+        platformVersion = '0.5.0-SNAPSHOT'
 
         commonsLangVersion = '3.7'
         springBomVersion = 'Brussels-SR6'
@@ -139,21 +139,12 @@ allprojects {
         compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
         compile "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
 
-        // Spring
-        compile("org.springframework:spring-context")
-        compile("org.springframework.boot:spring-boot-starter")
-        optional("org.springframework.boot:spring-boot-configuration-processor")
-
         // Apache commons
         compile("org.apache.commons:commons-lang3:${commonsLangVersion}")
 
         // Logging
         compile("org.slf4j:slf4j-api")
         runtime("ch.qos.logback:logback-classic")
-
-        // Others
-        compile("io.netty:netty-all:${nettyVersion}")
-        compile("com.fasterxml.jackson.core:jackson-databind")
 
         // Test
         testCompile("junit:junit")
@@ -164,4 +155,42 @@ allprojects {
     }
 
     compileJava.dependsOn(processResources)
+}
+
+project('core') {
+    dependencies {
+        compile("org.springframework:spring-context")
+    }
+}
+
+project('router') {
+    dependencies {
+        compile project(':core')
+    }
+}
+
+project('server') {
+    dependencies {
+        compile project(':router')
+
+        compile("io.netty:netty-all:${nettyVersion}")
+    }
+}
+
+project('websocket') {
+    dependencies {
+        compile project(':server')
+
+        compile("io.netty:netty-codec-http:${nettyVersion}")
+        compile("com.fasterxml.jackson.core:jackson-databind")
+    }
+}
+
+project('starter') {
+    dependencies {
+        compile project(':websocket')
+
+        compile("org.springframework.boot:spring-boot-starter")
+        optional("org.springframework.boot:spring-boot-configuration-processor")
+    }
 }
