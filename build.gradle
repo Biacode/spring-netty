@@ -3,7 +3,7 @@ buildscript {
         kotlinVersion = '1.2.21'
         springBootVersion = '1.5.9.RELEASE'
         springDependencyManagementVersion = '1.0.4.RELEASE'
-        platformGroup = 'org.biacode.hermes'
+        platformGroup = 'org.biacode.hermes.spring.netty'
         platformVersion = '0.5.0-SNAPSHOT'
 
         commonsLangVersion = '3.7'
