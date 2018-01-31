@@ -18,9 +18,9 @@ import javax.annotation.PreDestroy;
  * Time: 4:14 PM
  */
 @Configuration
-public class WebsocketServerConfiguration {
+public class ServerConfiguration {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebsocketServerConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServerConfiguration.class);
 
     //region Dependencies
     @Value("${spring.netty.host.port}")
