@@ -29,20 +29,7 @@ buildscript {
     }
 }
 
-allprojects {
-
-    apply plugin: 'idea'
-    apply plugin: 'kotlin'
-    apply plugin: 'eclipse'
-    apply plugin: 'maven'
-    apply plugin: 'kotlin-spring'
-    apply plugin: "io.spring.dependency-management"
-
-    apply plugin: 'propdeps'
-    apply plugin: 'propdeps-maven'
-    apply plugin: 'propdeps-idea'
-    apply plugin: 'propdeps-eclipse'
-
+def doDeploy() {
     if (System.env['DEPLOY_TO_NEXUS'] != null) {
 
         apply plugin: 'signing'
@@ -65,51 +52,64 @@ allprojects {
             archives javadocJar, sourcesJar
         }
 
-        uploadArchives {
-            repositories {
-                mavenDeployer {
-                    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-                    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
-                        authentication(userName: System.getenv('NEXUS_USERNAME'), password: System.getenv('NEXUS_PASSWORD'))
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                    authentication(userName: System.getenv('NEXUS_USERNAME'), password: System.getenv('NEXUS_PASSWORD'))
+                }
+
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                    authentication(userName: System.getenv('NEXUS_USERNAME'), password: System.getenv('NEXUS_PASSWORD'))
+                }
+
+                pom.project {
+                    name 'NettySpring'
+                    packaging 'jar'
+                    // optionally artifactId can be defined here
+                    description 'Netty spring integration.'
+                    url 'https://github.com/hermes-chat/spring-netty'
+
+                    scm {
+                        connection 'scm:git@github.com:hermes-chat/spring-netty.git'
+                        developerConnection 'scm:git:ssh://github.com:hermes-chat/spring-netty.git'
+                        url 'https://github.com/hermes-chat/spring-netty/tree/master'
                     }
 
-                    snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
-                        authentication(userName: System.getenv('NEXUS_USERNAME'), password: System.getenv('NEXUS_PASSWORD'))
+                    licenses {
+                        license {
+                            name 'Apache-2.0'
+                            url 'https://opensource.org/licenses/Apache-2.0'
+                        }
                     }
 
-                    pom.project {
-                        name 'NettySpring'
-                        packaging 'jar'
-                        // optionally artifactId can be defined here
-                        description 'Netty spring integration.'
-                        url 'https://github.com/hermes-chat/spring-netty'
-
-                        scm {
-                            connection 'scm:git@github.com:hermes-chat/spring-netty.git'
-                            developerConnection 'scm:git:ssh://github.com:hermes-chat/spring-netty.git'
-                            url 'https://github.com/hermes-chat/spring-netty/tree/master'
-                        }
-
-                        licenses {
-                            license {
-                                name 'Apache-2.0'
-                                url 'https://opensource.org/licenses/Apache-2.0'
-                            }
-                        }
-
-                        developers {
-                            developer {
-                                id 'biacode'
-                                name 'Artur Asatryan'
-                                email 'biacoder@gmail.com'
-                            }
+                    developers {
+                        developer {
+                            id 'biacode'
+                            name 'Artur Asatryan'
+                            email 'biacoder@gmail.com'
                         }
                     }
                 }
             }
         }
     }
+}
+
+allprojects {
+
+    apply plugin: 'idea'
+    apply plugin: 'kotlin'
+    apply plugin: 'eclipse'
+    apply plugin: 'maven'
+    apply plugin: 'kotlin-spring'
+    apply plugin: "io.spring.dependency-management"
+
+    apply plugin: 'propdeps'
+    apply plugin: 'propdeps-maven'
+    apply plugin: 'propdeps-idea'
+    apply plugin: 'propdeps-eclipse'
 
     group = platformGroup
     version = platformVersion
@@ -124,6 +124,7 @@ allprojects {
     compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }
+
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }
@@ -158,18 +159,27 @@ allprojects {
 }
 
 project('core') {
+
+    doDeploy()
+
     dependencies {
         compile("org.springframework:spring-context")
     }
 }
 
 project('router') {
+
+    doDeploy()
+
     dependencies {
         compile project(':core')
     }
 }
 
 project('server') {
+
+    doDeploy()
+
     dependencies {
         compile project(':router')
 
@@ -178,11 +188,26 @@ project('server') {
 }
 
 project('websocket') {
+
+    doDeploy()
+
     dependencies {
         compile project(':server')
 
         compile("io.netty:netty-codec-http:${nettyVersion}")
         compile("com.fasterxml.jackson.core:jackson-databind")
+    }
+}
+
+project('starter') {
+
+    doDeploy()
+
+    dependencies {
+        compile project(':websocket')
+
+        compile("org.springframework.boot:spring-boot-starter")
+        optional("org.springframework.boot:spring-boot-configuration-processor")
     }
 }
 
