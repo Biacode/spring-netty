@@ -37,7 +37,6 @@ Netty spring integration.
 ```
 
 ### Gradle
-
 ```groovy
 
 repositories {

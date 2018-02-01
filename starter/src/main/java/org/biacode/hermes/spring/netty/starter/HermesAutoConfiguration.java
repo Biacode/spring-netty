@@ -1,7 +1,7 @@
 package org.biacode.hermes.spring.netty.starter;
 
 import org.biacode.hermes.spring.netty.core.annotation.HermesController;
-import org.biacode.hermes.spring.netty.starter.configuration.NettyAnnotationDrivenConfiguration;
+import org.biacode.hermes.spring.netty.starter.configuration.HermesAnnotationDrivenConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +15,6 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ConditionalOnClass(HermesController.class)
 @EnableConfigurationProperties(NettyProperties.class)
-@Import(NettyAnnotationDrivenConfiguration.class)
-public class NettyAutoConfiguration {
+@Import(HermesAnnotationDrivenConfiguration.class)
+public class HermesAutoConfiguration {
 }
