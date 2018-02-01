@@ -211,9 +211,9 @@ project('starter') {
     }
 }
 
-project('starter') {
+project('examples') {
     dependencies {
-        compile project(':websocket')
+        compile project(':starter')
 
         compile("org.springframework.boot:spring-boot-starter")
         optional("org.springframework.boot:spring-boot-configuration-processor")
