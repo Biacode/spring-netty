@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.biacode.spring.netty.websocket.starter.NettyAutoConfiguration

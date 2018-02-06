@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.biacode.hermes.spring.netty.starter.HermesAutoConfiguration

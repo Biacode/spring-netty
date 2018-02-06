@@ -30,7 +30,7 @@ There is no stable release yet.
 </repositories>
 
 <dependency>
-  <groupId>org.biacode.hermes.spring.netty</groupId>
+  <groupId>org.biacode.spring.netty</groupId>
   <artifactId>starter</artifactId>
   <version>${spring.netty.version}</version>
 </dependency>
@@ -47,5 +47,5 @@ repositories {
     jcenter()
 }
 
-compile "org.biacode.hermes.spring.netty:starter:${springNettyVersion}"
+compile "org.biacode.spring.netty:starter:${springNettyVersion}"
 ```

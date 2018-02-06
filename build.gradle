@@ -3,8 +3,8 @@ buildscript {
         kotlinVersion = '1.2.21'
         springBootVersion = '1.5.9.RELEASE'
         springDependencyManagementVersion = '1.0.4.RELEASE'
-        platformGroup = 'org.biacode.hermes.spring.netty'
-        platformVersion = '0.6.0-SNAPSHOT'
+        platformGroup = 'org.biacode.spring.netty'
+        platformVersion = '0.7.0-SNAPSHOT'
 
         commonsLangVersion = '3.7'
         springBomVersion = 'Brussels-SR6'
@@ -69,12 +69,12 @@ def doDeploy() {
                     packaging 'jar'
                     // optionally artifactId can be defined here
                     description 'Netty spring integration.'
-                    url 'https://github.com/hermes-chat/spring-netty'
+                    url 'https://github.com/Biacode/spring-netty'
 
                     scm {
-                        connection 'scm:git@github.com:hermes-chat/spring-netty.git'
-                        developerConnection 'scm:git:ssh://github.com:hermes-chat/spring-netty.git'
-                        url 'https://github.com/hermes-chat/spring-netty/tree/master'
+                        connection 'scm:git@github.com:Biacode/spring-netty.git'
+                        developerConnection 'scm:git:ssh://github.com:Biacode/spring-netty.git'
+                        url 'https://github.com/Biacode/spring-netty/tree/master'
                     }
 
                     licenses {
