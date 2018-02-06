@@ -1,4 +1,4 @@
-package org.biacode.hermes.spring.netty.starter;
+package org.biacode.hermes.spring.netty.websocket.starter;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

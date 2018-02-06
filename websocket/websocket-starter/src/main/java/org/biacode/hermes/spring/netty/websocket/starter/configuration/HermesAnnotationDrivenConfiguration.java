@@ -1,4 +1,4 @@
-package org.biacode.hermes.spring.netty.starter.configuration;
+package org.biacode.hermes.spring.netty.websocket.starter.configuration;
 
 import org.biacode.hermes.spring.netty.websocket.configuration.WebsocketAnnotationDrivenConfiguration;
 import org.springframework.context.annotation.ComponentScan;

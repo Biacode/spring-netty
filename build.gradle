@@ -187,7 +187,7 @@ project('server') {
     }
 }
 
-project('websocket') {
+project('websocket:websocket-server') {
 
     doDeploy()
 
@@ -199,12 +199,12 @@ project('websocket') {
     }
 }
 
-project('starter') {
+project('websocket:websocket-starter') {
 
     doDeploy()
 
     dependencies {
-        compile project(':websocket')
+        compile project(':websocket:websocket-server')
 
         compile("org.springframework.boot:spring-boot-starter")
         optional("org.springframework.boot:spring-boot-configuration-processor")
@@ -213,7 +213,7 @@ project('starter') {
 
 project('examples') {
     dependencies {
-        compile project(':starter')
+        compile project(':websocket:websocket-starter')
 
         compile("org.springframework.boot:spring-boot-starter")
         optional("org.springframework.boot:spring-boot-configuration-processor")

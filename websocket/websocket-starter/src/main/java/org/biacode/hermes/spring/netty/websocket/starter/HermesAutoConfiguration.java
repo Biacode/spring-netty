@@ -1,7 +1,7 @@
-package org.biacode.hermes.spring.netty.starter;
+package org.biacode.hermes.spring.netty.websocket.starter;
 
 import org.biacode.hermes.spring.netty.core.annotation.HermesController;
-import org.biacode.hermes.spring.netty.starter.configuration.HermesAnnotationDrivenConfiguration;
+import org.biacode.hermes.spring.netty.websocket.starter.configuration.HermesAnnotationDrivenConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
