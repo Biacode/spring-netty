@@ -1,7 +1,7 @@
 # spring-netty
 Netty spring integration.
 
-[![Build Status](https://travis-ci.org/hermes-chat/spring-netty.svg?branch=master)](https://travis-ci.org/hermes-chat/spring-netty)
+[![Build Status](https://travis-ci.org/Biacode/spring-netty.svg?branch=master)](https://travis-ci.org/Biacode/spring-netty)
 
 # About
 Mainly, the [Spring Netty](https://github.com/hermes-chat/spring-netty) project is created to solve Netty + Spring issues in [HermesChat](https://github.com/hermes-chat),
