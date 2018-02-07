@@ -29,74 +29,6 @@ buildscript {
     }
 }
 
-def doDeploy() {
-    if (System.env['DEPLOY_TO_NEXUS'] != null) {
-
-        apply plugin: 'signing'
-
-        signing {
-            sign configurations.archives
-        }
-
-        task javadocJar(type: Jar) {
-            classifier = 'javadoc'
-            from javadoc
-        }
-
-        task sourcesJar(type: Jar) {
-            classifier = 'sources'
-            from sourceSets.main.allSource
-        }
-
-        artifacts {
-            archives javadocJar, sourcesJar
-        }
-
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
-                    authentication(userName: System.getenv('NEXUS_USERNAME'), password: System.getenv('NEXUS_PASSWORD'))
-                }
-
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
-                    authentication(userName: System.getenv('NEXUS_USERNAME'), password: System.getenv('NEXUS_PASSWORD'))
-                }
-
-                pom.project {
-                    name 'NettySpring'
-                    packaging 'jar'
-                    // optionally artifactId can be defined here
-                    description 'Netty spring integration.'
-                    url 'https://github.com/Biacode/spring-netty'
-
-                    scm {
-                        connection 'scm:git@github.com:Biacode/spring-netty.git'
-                        developerConnection 'scm:git:ssh://github.com:Biacode/spring-netty.git'
-                        url 'https://github.com/Biacode/spring-netty/tree/master'
-                    }
-
-                    licenses {
-                        license {
-                            name 'Apache-2.0'
-                            url 'https://opensource.org/licenses/Apache-2.0'
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id 'biacode'
-                            name 'Artur Asatryan'
-                            email 'biacoder@gmail.com'
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 allprojects {
 
     apply plugin: 'idea'
@@ -127,6 +59,74 @@ allprojects {
 
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
+    }
+
+    if (System.env['DEPLOY_TO_NEXUS'] != null) {
+
+        apply plugin: 'signing'
+
+        signing {
+            sign configurations.archives
+        }
+
+        task javadocJar(type: Jar) {
+            classifier = 'javadoc'
+            from javadoc
+        }
+
+        task sourcesJar(type: Jar) {
+            classifier = 'sources'
+            from sourceSets.main.allSource
+        }
+
+        artifacts {
+            archives javadocJar, sourcesJar
+        }
+
+        uploadArchives {
+            repositories {
+                mavenDeployer {
+                    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                        authentication(userName: System.getenv('NEXUS_USERNAME'), password: System.getenv('NEXUS_PASSWORD'))
+                    }
+
+                    snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                        authentication(userName: System.getenv('NEXUS_USERNAME'), password: System.getenv('NEXUS_PASSWORD'))
+                    }
+
+                    pom.project {
+                        name 'NettySpring'
+                        packaging 'jar'
+                        // optionally artifactId can be defined here
+                        description 'Netty spring integration.'
+                        url 'https://github.com/Biacode/spring-netty'
+
+                        scm {
+                            connection 'scm:git@github.com:Biacode/spring-netty.git'
+                            developerConnection 'scm:git:ssh://github.com:Biacode/spring-netty.git'
+                            url 'https://github.com/Biacode/spring-netty/tree/master'
+                        }
+
+                        licenses {
+                            license {
+                                name 'Apache-2.0'
+                                url 'https://opensource.org/licenses/Apache-2.0'
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id 'biacode'
+                                name 'Artur Asatryan'
+                                email 'biacoder@gmail.com'
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     dependencyManagement {
@@ -160,8 +160,6 @@ allprojects {
 
 project('core') {
 
-    doDeploy()
-
     dependencies {
         compile("org.springframework:spring-context")
     }
@@ -169,16 +167,12 @@ project('core') {
 
 project('router') {
 
-    doDeploy()
-
     dependencies {
         compile project(':core')
     }
 }
 
 project('server') {
-
-    doDeploy()
 
     dependencies {
         compile project(':router')
@@ -189,8 +183,6 @@ project('server') {
 
 project('websocket:websocket-server') {
 
-    doDeploy()
-
     dependencies {
         compile project(':server')
 
@@ -200,8 +192,6 @@ project('websocket:websocket-server') {
 }
 
 project('websocket:websocket-starter') {
-
-    doDeploy()
 
     dependencies {
         compile project(':websocket:websocket-server')
