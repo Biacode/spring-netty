@@ -99,12 +99,12 @@ public class NettyControllerMethodRoute {
         return targetMethod;
     }
 
-    public Class<?> getRequestClass() {
-        return requestClass;
-    }
-
     public Object getTargetObject() {
         return targetObject;
+    }
+
+    public Class<?> getRequestClass() {
+        return requestClass;
     }
     //endregion
 }
