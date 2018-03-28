@@ -178,6 +178,7 @@ project('server') {
         compile project(':router')
 
         compile("io.netty:netty-all:${nettyVersion}")
+        testCompile("commons-logging:commons-logging")
     }
 }
 
