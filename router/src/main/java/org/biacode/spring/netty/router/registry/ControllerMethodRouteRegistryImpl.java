@@ -21,7 +21,7 @@ public class ControllerMethodRouteRegistryImpl implements ControllerMethodRouteR
     private static final Logger LOGGER = LoggerFactory.getLogger(ControllerMethodRouteRegistryImpl.class);
 
     //region Properties
-    private Map<String, NettyControllerMethodRoute> routes = new ConcurrentHashMap<>();
+    private final Map<String, NettyControllerMethodRoute> routes = new ConcurrentHashMap<>();
     //endregion
 
     //region Public methods
