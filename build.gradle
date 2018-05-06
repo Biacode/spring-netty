@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.31'
+        kotlinVersion = '1.2.41'
         springBootVersion = '1.5.9.RELEASE'
         springDependencyManagementVersion = '1.0.4.RELEASE'
         platformGroup = 'org.biacode.spring.netty'
