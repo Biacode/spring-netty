@@ -1,18 +1,21 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.41'
-        springBootVersion = '1.5.9.RELEASE'
-        springDependencyManagementVersion = '1.0.4.RELEASE'
+        springVersion = '5.0.6.RELEASE'
+        springBootVersion = '2.0.2.RELEASE'
         platformGroup = 'org.biacode.spring.netty'
-        platformVersion = '0.7.0-SNAPSHOT'
+        platformVersion = '0.8.0-SNAPSHOT'
 
         commonsLangVersion = '3.7'
-        springBomVersion = 'Brussels-SR6'
-        nettyVersion = '4.1.20.Final'
-        propDepsPluginVersion = '0.0.9.RELEASE'
+        nettyVersion = '4.1.24.Final'
+        slf4jVersion = '1.7.25'
+        logbackVersion = '1.2.3'
+        commonsLoggingVersion = '1.2'
+        jacksonVersion = '2.9.5'
+        propDepsPluginVersion = '0.0.10.RELEASE'
 
+        junitVersion = '4.12'
         easymockVersion = '3.5.1'
-        assetjVersion = '3.9.0'
+        assetjVersion = '3.9.1'
     }
 
     repositories {
@@ -22,9 +25,6 @@ buildscript {
         maven { url 'http://repo.spring.io/plugins-release' }
     }
     dependencies {
-        classpath("io.spring.gradle:dependency-management-plugin:${springDependencyManagementVersion}")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
-        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
         classpath("io.spring.gradle:propdeps-plugin:${propDepsPluginVersion}")
     }
 }
@@ -32,11 +32,8 @@ buildscript {
 allprojects {
 
     apply plugin: 'idea'
-    apply plugin: 'kotlin'
     apply plugin: 'eclipse'
     apply plugin: 'maven'
-    apply plugin: 'kotlin-spring'
-    apply plugin: "io.spring.dependency-management"
 
     apply plugin: 'propdeps'
     apply plugin: 'propdeps-maven'
@@ -51,14 +48,6 @@ allprojects {
         mavenLocal()
         mavenCentral()
         jcenter()
-    }
-
-    compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
-    }
-
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
     }
 
     if (System.env['DEPLOY_TO_NEXUS'] != null) {
@@ -129,30 +118,16 @@ allprojects {
         }
     }
 
-    dependencyManagement {
-        imports {
-            mavenBom "io.spring.platform:platform-bom:${springBomVersion}"
-        }
-    }
-
     dependencies {
-        // Kotlin
-        compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
-        compile "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
-
-        // Apache commons
         compile("org.apache.commons:commons-lang3:${commonsLangVersion}")
+        compile("org.slf4j:slf4j-api:$slf4jVersion")
 
-        // Logging
-        compile("org.slf4j:slf4j-api")
-
-        // Test
-        testCompile("junit:junit")
+        testCompile("junit:junit:$junitVersion")
         testCompile("org.easymock:easymock:${easymockVersion}")
-        testCompile("org.assertj:assertj-core:${assetjVersion}")
-        testCompile("org.springframework:spring-test")
-        testCompile("org.springframework.boot:spring-boot-starter-test")
-        testRuntime("ch.qos.logback:logback-classic")
+        testCompile("org.assertj:assertj-core:$assetjVersion")
+        testCompile("org.springframework:spring-test:$springVersion")
+        testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
+        testRuntime("ch.qos.logback:logback-classic:$logbackVersion")
     }
 
     compileJava.dependsOn(processResources)
@@ -161,7 +136,8 @@ allprojects {
 project('core') {
 
     dependencies {
-        compile("org.springframework:spring-context")
+        compile("org.springframework:spring-context:$springVersion")
+        compile("io.netty:netty-all:${nettyVersion}")
     }
 }
 
@@ -176,9 +152,7 @@ project('server') {
 
     dependencies {
         compile project(':router')
-
-        compile("io.netty:netty-all:${nettyVersion}")
-        testCompile("commons-logging:commons-logging")
+        testCompile("commons-logging:commons-logging:$commonsLoggingVersion")
     }
 }
 
@@ -186,9 +160,7 @@ project('websocket:websocket-server') {
 
     dependencies {
         compile project(':server')
-
-        compile("io.netty:netty-codec-http:${nettyVersion}")
-        compile("com.fasterxml.jackson.core:jackson-databind")
+        compile("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     }
 }
 
@@ -197,16 +169,13 @@ project('websocket:websocket-starter') {
     dependencies {
         compile project(':websocket:websocket-server')
 
-        compile("org.springframework.boot:spring-boot-starter")
-        optional("org.springframework.boot:spring-boot-configuration-processor")
+        compile("org.springframework.boot:spring-boot-starter:$springBootVersion")
+        optional("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
     }
 }
 
 project('examples') {
     dependencies {
         compile project(':websocket:websocket-starter')
-
-        compile("org.springframework.boot:spring-boot-starter")
-        optional("org.springframework.boot:spring-boot-configuration-processor")
     }
 }
