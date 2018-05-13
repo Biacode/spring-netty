@@ -16,11 +16,6 @@ public class NettyProperties {
     private Host host = new Host();
 
     /**
-     * The SSL configuration (in particular enabling and disabling).
-     */
-    private Ssl ssl = new Ssl();
-
-    /**
      * Netty boss event loop group configuration.
      */
     private Boss boss = new Boss();
@@ -42,14 +37,6 @@ public class NettyProperties {
 
     public void setHost(final Host host) {
         this.host = host;
-    }
-
-    public Ssl getSsl() {
-        return ssl;
-    }
-
-    public void setSsl(final Ssl ssl) {
-        this.ssl = ssl;
     }
 
     public Boss getBoss() {
@@ -104,22 +91,6 @@ public class NettyProperties {
 
         public void setPort(final int port) {
             this.port = port;
-        }
-    }
-
-    private static class Ssl {
-        /**
-         * Enable or disable SSL.
-         * Default false
-         */
-        private boolean enabled = false;
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(final boolean enabled) {
-            this.enabled = enabled;
         }
     }
 

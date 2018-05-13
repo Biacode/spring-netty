@@ -1,13 +1,11 @@
 package org.biacode.spring.netty.websocket;
 
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
-import io.netty.handler.ssl.SslContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +27,6 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
     private String websocketPath;
 
     @Autowired
-    private SslContext sslCtx;
-
-    @Autowired
     private WebSocketFrameHandler webSocketFrameHandler;
     //endregion
 
@@ -39,12 +34,7 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
     @Override
     protected void initChannel(final SocketChannel ch) throws Exception {
         LOGGER.debug("Creating channel pipeline");
-        final ChannelPipeline pipeline = ch.pipeline();
-        if (sslCtx != null) {
-            LOGGER.debug("Adding SSL handler to pipeline");
-            pipeline.addLast(sslCtx.newHandler(ch.alloc()));
-        }
-        pipeline
+        ch.pipeline()
                 .addLast("httpServerCodec", new HttpServerCodec())
                 .addLast("httpObjectAggregator", new HttpObjectAggregator(65536))
                 .addLast("webSocketServerCompressionHandler", new WebSocketServerCompressionHandler())

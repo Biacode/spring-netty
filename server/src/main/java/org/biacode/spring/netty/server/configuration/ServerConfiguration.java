@@ -37,8 +37,8 @@ public class ServerConfiguration {
     //endregion
 
     //region Public method
-    @Bean
-    public Channel startedServer() throws InterruptedException {
+    @Bean(name = "serverChannel")
+    public Channel serverChannel() throws InterruptedException {
         LOGGER.debug("Starting server on port - {}", tcpPort);
         return serverBootstrap.bind(tcpPort).sync().channel().closeFuture().channel();
     }
@@ -46,9 +46,9 @@ public class ServerConfiguration {
     @PreDestroy
     public void stop() throws InterruptedException {
         LOGGER.debug("Closing server channel");
-        startedServer().close();
+        serverChannel().close();
         LOGGER.debug("Closing server channel's parent");
-        startedServer().parent().close();
+        serverChannel().parent().close();
         LOGGER.debug("Shutting down boss group");
         bossGroup.shutdownGracefully();
         LOGGER.debug("Shutting down worker group");

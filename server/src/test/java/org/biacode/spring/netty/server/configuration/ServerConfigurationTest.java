@@ -29,7 +29,7 @@ public class ServerConfigurationTest {
                 ServerAnnotationDrivenConfiguration.class
         );
         final ServerConfiguration serverConfiguration = applicationContext.getBean(ServerConfiguration.class);
-        final Channel channel = serverConfiguration.startedServer();
+        final Channel channel = serverConfiguration.serverChannel();
         assertThat(channel).isNotNull();
     }
     //endregion

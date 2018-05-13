@@ -26,13 +26,13 @@ public class EventLoopGroupConfiguration {
     //endregion
 
     //region Public methods
-    @Bean(destroyMethod = "shutdownGracefully")
+    @Bean(destroyMethod = "shutdownGracefully", name = "bossGroup")
     public NioEventLoopGroup bossGroup() {
         LOGGER.debug("Creating boss loop group with boss thread count - {}", bossGroupThreadSize);
         return new NioEventLoopGroup(bossGroupThreadSize);
     }
 
-    @Bean(destroyMethod = "shutdownGracefully")
+    @Bean(destroyMethod = "shutdownGracefully", name = "workerGroup")
     public NioEventLoopGroup workerGroup() {
         LOGGER.debug("Creating worker loop group with worker thread count - {}", bossGroupThreadSize);
         return new NioEventLoopGroup(workerGroupThreadSize);

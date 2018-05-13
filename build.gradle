@@ -3,7 +3,7 @@ buildscript {
         springVersion = '5.0.6.RELEASE'
         springBootVersion = '2.0.2.RELEASE'
         platformGroup = 'org.biacode.spring.netty'
-        platformVersion = '0.8.0-SNAPSHOT'
+        platformVersion = '0.9.0-SNAPSHOT'
 
         commonsLangVersion = '3.7'
         nettyVersion = '4.1.24.Final'
@@ -12,6 +12,7 @@ buildscript {
         commonsLoggingVersion = '1.2'
         jacksonVersion = '2.9.5'
         propDepsPluginVersion = '0.0.10.RELEASE'
+        jsr305ImplVersion = '3.0.2'
 
         junitVersion = '4.12'
         easymockVersion = '3.5.1'
@@ -121,6 +122,7 @@ allprojects {
     dependencies {
         compile("org.apache.commons:commons-lang3:${commonsLangVersion}")
         compile("org.slf4j:slf4j-api:$slf4jVersion")
+        compile ("com.google.code.findbugs:jsr305:$jsr305ImplVersion")
 
         testCompile("junit:junit:$junitVersion")
         testCompile("org.easymock:easymock:${easymockVersion}")

@@ -1,11 +1,13 @@
 package org.biacode.spring.netty.router;
 
+import org.apache.commons.lang3.mutable.Mutable;
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.biacode.spring.netty.core.annotation.NettyCommand;
+import org.biacode.spring.netty.core.annotation.NettyContext;
 import org.biacode.spring.netty.core.annotation.NettyController;
 import org.biacode.spring.netty.core.annotation.NettyRequest;
 import org.biacode.spring.netty.core.registry.ControllerMethodRouteRegistry;
 import org.biacode.spring.netty.core.registry.model.NettyControllerMethodRoute;
-import org.biacode.spring.netty.core.request.NettyControllerRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,21 +64,17 @@ public class NettyRouteGeneratorBeanFactoryPostProcessor implements ApplicationL
                             final Object beanObject = context.getBean(beanDefinitionName);
                             final Method beanMethod = ClassUtils.getMethod(beanObject.getClass(), originalMethod.getName(), originalMethod.getParameterTypes());
                             final NettyCommand annotation = originalMethod.getAnnotation(NettyCommand.class);
-                            // If method contains exactly one parameter
-                            if (originalMethod.getParameterCount() == 1) {
-                                final String parameterTypeName = originalMethod.getParameterTypes()[0].getName();
-                                final Class<?> resolvedClass = ClassUtils.resolveClassName(parameterTypeName, systemClassLoader);
-                                LOGGER.debug(
-                                        "Method - {} contains exactly one parameter - {}",
-                                        originalMethod.getName(),
-                                        parameterTypeName
-                                );
-                                registry.addRoute(new NettyControllerMethodRoute(annotation.value(), beanMethod, beanObject, resolvedClass));
+                            // If method does not contain any parameter
+                            if (originalMethod.getParameterCount() == 0) {
+                                LOGGER.debug("Method - {} does not contain any parameter", originalMethod.getName());
+                                registry.addRoute(new NettyControllerMethodRoute(annotation.value(), beanMethod, beanObject));
                                 return;
                             }
-                            // If method contains parameter annotated with NettyRequest
+                            // If method contains parameter annotated with NettyRequest and/or NettyContext
                             final Annotation[][] parameterAnnotations = originalMethod.getParameterAnnotations();
                             final Class<?>[] parameterTypes = originalMethod.getParameterTypes();
+                            final Mutable<Class<?>> resolvedClassMutable = new MutableObject<>();
+                            final Mutable<Boolean> contextNeededMutable = new MutableObject<>(false);
                             for (int i = 0; i < parameterAnnotations.length; i++) {
                                 if (stream(parameterAnnotations[i]).anyMatch(it -> it.annotationType().equals(NettyRequest.class))) {
                                     final String parameterTypeName = parameterTypes[i].getName();
@@ -87,24 +85,27 @@ public class NettyRouteGeneratorBeanFactoryPostProcessor implements ApplicationL
                                             parameterTypeName,
                                             NettyRequest.class.getName()
                                     );
-                                    registry.addRoute(new NettyControllerMethodRoute(annotation.value(), beanMethod, beanObject, resolvedClass));
-                                    return;
+                                    resolvedClassMutable.setValue(resolvedClass);
+                                }
+                                if (stream(parameterAnnotations[i]).anyMatch(it -> it.annotationType().equals(NettyContext.class))) {
+                                    contextNeededMutable.setValue(true);
                                 }
                             }
-                            // If method contains parameter which is instance of NettyControllerRequest
-                            for (final Class<?> parameterType : originalMethod.getParameterTypes()) {
-                                final String parameterTypeName = parameterType.getName();
-                                final Class<?> resolvedClass = ClassUtils.resolveClassName(parameterType.getName(), systemClassLoader);
-                                if (NettyControllerRequest.class.isAssignableFrom(resolvedClass)) {
-                                    LOGGER.debug(
-                                            "Method - {} contains parameter - {} which is instance of - {}",
-                                            originalMethod.getName(),
-                                            parameterTypeName,
-                                            NettyControllerRequest.class.getName()
-                                    );
-                                    registry.addRoute(new NettyControllerMethodRoute(annotation.value(), beanMethod, beanObject, resolvedClass));
-                                    return;
-                                }
+                            if (resolvedClassMutable.getValue() != null) {
+                                registry.addRoute(new NettyControllerMethodRoute(
+                                        annotation.value(),
+                                        beanMethod,
+                                        beanObject,
+                                        resolvedClassMutable.getValue(),
+                                        contextNeededMutable.getValue()
+                                ));
+                            } else if (contextNeededMutable.getValue()) {
+                                registry.addRoute(new NettyControllerMethodRoute(
+                                        annotation.value(),
+                                        beanMethod,
+                                        beanObject,
+                                        contextNeededMutable.getValue()
+                                ));
                             }
                         });
             }

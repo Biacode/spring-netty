@@ -1,12 +1,12 @@
 package org.biacode.spring.netty.router.registry;
 
-import io.netty.util.internal.PlatformDependent;
 import org.biacode.spring.netty.core.registry.ControllerMethodRouteRegistry;
 import org.biacode.spring.netty.core.registry.model.NettyControllerMethodRoute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import org.springframework.util.ConcurrentReferenceHashMap;
 
 import java.util.Map;
 
@@ -21,7 +21,7 @@ public class ControllerMethodRouteRegistryImpl implements ControllerMethodRouteR
     private static final Logger LOGGER = LoggerFactory.getLogger(ControllerMethodRouteRegistryImpl.class);
 
     //region Properties
-    private final Map<String, NettyControllerMethodRoute> routes = PlatformDependent.newConcurrentHashMap();
+    private final Map<String, NettyControllerMethodRoute> routes = new ConcurrentReferenceHashMap<>();
     //endregion
 
     //region Public methods

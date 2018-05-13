@@ -35,7 +35,7 @@ public class ServerBootstrapConfiguration {
     //endregion
 
     //region Public methods
-    @Bean
+    @Bean(name = "serverBootstrap")
     public ServerBootstrap serverBootstrap() {
         LOGGER.debug("Bootstrapping websocket server...");
         return new ServerBootstrap()

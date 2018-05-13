@@ -21,6 +21,8 @@ public class NettyControllerMethodRoute {
     private final Object targetObject;
 
     private final Class<?> requestClass;
+
+    private boolean contextNeeded;
     //endregion
 
     //region Constructors
@@ -42,10 +44,33 @@ public class NettyControllerMethodRoute {
         this.targetObject = targetObject;
         this.requestClass = requestClass;
     }
+
+    public NettyControllerMethodRoute(final String command,
+                                      final Method targetMethod,
+                                      final Object targetObject,
+                                      final Class<?> requestClass,
+                                      boolean contextNeeded) {
+        this.command = command;
+        this.targetMethod = targetMethod;
+        this.targetObject = targetObject;
+        this.requestClass = requestClass;
+        this.contextNeeded = contextNeeded;
+    }
+
+    public NettyControllerMethodRoute(final String command,
+                                      final Method targetMethod,
+                                      final Object targetObject,
+                                      boolean contextNeeded) {
+        this.command = command;
+        this.targetMethod = targetMethod;
+        this.targetObject = targetObject;
+        this.contextNeeded = contextNeeded;
+        this.requestClass = NoRequestClass.class;
+    }
     //endregion
 
     //region Inner classes
-    private static final class NoRequestClass {
+    public static final class NoRequestClass {
         private NoRequestClass() {
         }
     }
@@ -66,6 +91,7 @@ public class NettyControllerMethodRoute {
                 .append(targetMethod, that.targetMethod)
                 .append(requestClass, that.requestClass)
                 .append(targetObject, that.targetObject)
+                .append(contextNeeded, that.contextNeeded)
                 .isEquals();
     }
 
@@ -76,6 +102,7 @@ public class NettyControllerMethodRoute {
                 .append(targetMethod)
                 .append(requestClass)
                 .append(targetObject)
+                .append(contextNeeded)
                 .toHashCode();
     }
 
@@ -86,6 +113,7 @@ public class NettyControllerMethodRoute {
                 .append("method", targetMethod)
                 .append("requestClass", requestClass)
                 .append("targetObject", targetObject)
+                .append("contextNeeded", contextNeeded)
                 .toString();
     }
     //endregion
@@ -105,6 +133,14 @@ public class NettyControllerMethodRoute {
 
     public Class<?> getRequestClass() {
         return requestClass;
+    }
+
+    public boolean isContextNeeded() {
+        return contextNeeded;
+    }
+
+    public void setContextNeeded(final boolean contextNeeded) {
+        this.contextNeeded = contextNeeded;
     }
     //endregion
 }
