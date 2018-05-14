@@ -26,6 +26,7 @@ buildscript {
         maven { url 'http://repo.spring.io/plugins-release' }
     }
     dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("io.spring.gradle:propdeps-plugin:${propDepsPluginVersion}")
     }
 }
@@ -122,7 +123,7 @@ allprojects {
     dependencies {
         compile("org.apache.commons:commons-lang3:${commonsLangVersion}")
         compile("org.slf4j:slf4j-api:$slf4jVersion")
-        compile ("com.google.code.findbugs:jsr305:$jsr305ImplVersion")
+        compile("com.google.code.findbugs:jsr305:$jsr305ImplVersion")
 
         testCompile("junit:junit:$junitVersion")
         testCompile("org.easymock:easymock:${easymockVersion}")
@@ -176,8 +177,14 @@ project('websocket:websocket-starter') {
     }
 }
 
-project('examples') {
+project('examples:websocket') {
+
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
     dependencies {
-        compile project(':websocket:websocket-starter')
+        compile("org.biacode.spring.netty:websocket-starter:$platformVersion")
+        compile("org.springframework.boot:spring-boot-starter-web")
+        testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }
