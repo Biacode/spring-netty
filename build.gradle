@@ -53,6 +53,9 @@ allprojects {
         mavenLocal()
         mavenCentral()
         jcenter()
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }
     }
 
     if (System.env['DEPLOY_TO_NEXUS'] != null) {
