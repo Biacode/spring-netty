@@ -24,6 +24,9 @@ buildscript {
         mavenCentral()
         jcenter()
         maven { url 'http://repo.spring.io/plugins-release' }
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -186,5 +189,10 @@ project('examples:websocket') {
         compile("org.biacode.spring.netty:websocket-starter:$platformVersion")
         compile("org.springframework.boot:spring-boot-starter-web")
         testCompile("org.springframework.boot:spring-boot-starter-test")
+    }
+
+    bootRepackage {
+        mainClass = "org.biacode.spring.netty.example.websocket.ExampleApplication"
+        executable = true
     }
 }
